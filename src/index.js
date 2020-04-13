@@ -5,16 +5,36 @@ import './index.css';
 class Square extends React.Component {
     render() {
         return (
-            <button className="square">
-                {/* TODO */}
+            <button
+                className="square"
+                onClick={() => this.props.callback(this.props.index, "XX")}
+            >
+                {this.props.value}
             </button>
         );
     }
 }
 
 class Board extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            squares: Array(9).fill(null)
+        };
+    }
+
+    fillSq(i, value) {
+        console.log(i)
+        const sq = this.state.squares.slice();
+        sq[i] = value;
+        this.setState({squares: sq})
+    }
+
     renderSquare(i) {
-        return <Square />;
+        return <Square
+            index={i}
+            value={this.state.squares[i]}
+            callback={(index, value) => this.fillSq(index, value)}/>;
     }
 
     render() {
@@ -48,7 +68,7 @@ class Game extends React.Component {
         return (
             <div className="game">
                 <div className="game-board">
-                    <Board />
+                    <Board/>
                 </div>
                 <div className="game-info">
                     <div>{/* status */}</div>
@@ -62,6 +82,6 @@ class Game extends React.Component {
 // ========================================
 
 ReactDOM.render(
-    <Game />,
+    <Game/>,
     document.getElementById('root')
 );
